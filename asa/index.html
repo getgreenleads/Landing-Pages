@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASA Energy Independence Page (Prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Urbanist:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:oklch(0.3 0.1 268);--red:oklch(0.5 0.2 27);--ink:oklch(0.17 0.02 268);--muted:oklch(0.45 0.03 268);
+  --paper:#fff;--wash:oklch(0.955 0.006 268);--line:oklch(0.89 0.012 268);--ok:oklch(0.52 0.13 155);--gold:oklch(0.78 0.16 75);
+  --grad:linear-gradient(90deg,var(--navy),var(--red));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif;line-height:1.6}
+h1,h2,h3{font-family:Urbanist,system-ui,sans-serif;font-weight:800;line-height:1.2;margin:0}
+button,input{font:inherit}
+.wrap{max-width:66rem;margin:0 auto;padding:0 16px}
+.proto{background:oklch(0.97 0.04 85);color:oklch(0.35 0.08 60);font-size:.8rem;text-align:center;padding:.45rem 16px}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:999px;background:var(--grad);color:#fff;font-weight:800;letter-spacing:.02em;padding:1rem 2.2rem;cursor:pointer;text-transform:uppercase;font-size:1rem;transition:filter .15s}
+.cta:hover{filter:brightness(1.15)}
+.cta:focus-visible,.choice:focus-visible,.field input:focus-visible,.ghost:focus-visible{outline:3px solid oklch(0.7 0.14 255);outline-offset:2px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:4rem}
+.brand{font-family:Urbanist,sans-serif;font-weight:800;color:var(--navy);line-height:1;font-size:1.05rem}
+.brand small{display:block;font-size:.62rem;letter-spacing:.24em;color:var(--red);margin-top:.2rem}
+.top .cta{padding:.6rem 1.3rem;font-size:.8rem}
+
+/* hero */
+.hero{background:linear-gradient(180deg,oklch(0.95 0.01 268),#fff);padding:2.5rem 0 3rem;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:.45rem;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:999px;padding:.4rem .9rem;font-weight:700;font-size:.85rem}
+.hero h1{max-width:58rem;margin:1.1rem auto .9rem;font-size:clamp(1.7rem,4.3vw,3.1rem);text-transform:uppercase;color:var(--ink)}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{max-width:44rem;margin:0 auto;color:var(--muted);font-size:1.08rem}
+.entry{max-width:56rem;margin:1.8rem auto 0;background:#fff;border:2px solid var(--navy);border-radius:.8rem;text-align:left;overflow:hidden;box-shadow:0 20px 50px -25px oklch(0.3 0.1 268/.45)}
+.entry-fields{display:grid;grid-template-columns:.75fr 1.25fr 1.2fr;gap:1rem;align-items:end;padding:1.3rem}
+.field{display:grid;gap:.45rem;font-weight:700;font-size:.92rem;color:var(--navy)}
+.field input{width:100%;height:3.5rem;border:2px solid var(--line);border-radius:.5rem;padding:0 1rem;font-size:1.1rem;color:var(--ink);background:#fff}
+.field input:focus{border-color:var(--navy);outline:none}
+.money{position:relative}.money input{padding-left:1.7rem}.money:before{content:"$";position:absolute;left:1rem;bottom:1.02rem;color:var(--muted);font-weight:500}
+.entry .cta{height:3.5rem;width:100%;border-radius:.5rem;padding:0 1rem;font-size:.92rem}
+.entry-msg{grid-column:1/-1;margin:-.3rem 0 0;font-size:.88rem;color:var(--red);min-height:0}
+.rent{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem 1rem;padding:.9rem 1rem;background:oklch(0.97 0.012 27);border-top:1px solid var(--line);font-size:.98rem;text-align:center}
+.rent b{color:var(--red);font-size:1.15rem}
+.assure{display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1.4rem;padding:.75rem 1rem;border-top:1px solid var(--line);font-size:.85rem;font-weight:600;color:var(--navy)}
+.assure span:before{content:"✓ ";color:var(--ok)}
+.stars{margin-top:1.4rem;color:var(--muted);font-size:.92rem}.stars b{color:var(--gold);letter-spacing:.1em}
+
+/* sections */
+section.band{padding:4rem 0}
+.band.alt{background:var(--wash)}
+.band h2{font-size:clamp(1.55rem,3.4vw,2.4rem);text-align:center;max-width:46rem;margin:0 auto 1rem}
+.lead-in{text-align:center;color:var(--muted);max-width:40rem;margin:0 auto 2.2rem}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:54rem;margin:0 auto}
+.compare article{border-radius:.8rem;padding:1.6rem;border:1px solid var(--line);background:#fff}
+.compare article.own{border:2px solid var(--navy);box-shadow:0 18px 40px -26px oklch(0.3 0.1 268/.5)}
+.compare h3{font-size:1.3rem;margin-bottom:.8rem}
+.compare ul{list-style:none;padding:0;margin:0;display:grid;gap:.55rem}
+.compare .rentcol li:before{content:"✕ ";color:var(--red);font-weight:800}
+.compare .own li:before{content:"✓ ";color:var(--ok);font-weight:800}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:58rem;margin:0 auto;counter-reset:s}
+.steps article{background:#fff;border:1px solid var(--line);border-radius:.8rem;padding:1.4rem;counter-increment:s}
+.steps article:before{content:counter(s);display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--grad);color:#fff;font-weight:800;margin-bottom:.8rem}
+.steps h3{font-size:1.15rem;margin-bottom:.4rem}.steps p{margin:0;color:var(--muted);font-size:.95rem}
+.storm{display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:center;max-width:58rem;margin:0 auto}
+.storm h2{text-align:left;margin:0 0 1rem}
+.storm p{color:var(--muted);margin:0 0 1rem}
+.storm-card{background:var(--navy);color:#fff;border-radius:1rem;padding:1.8rem}
+.storm-card h3{font-size:1.2rem;margin-bottom:1rem}
+.storm-card ul{margin:0;padding-left:1.1rem;display:grid;gap:.5rem}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:64rem;margin:0 auto}
+.reviews figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:.8rem;padding:1.3rem}
+.reviews .st{color:var(--gold);letter-spacing:.1em}
+.reviews blockquote{margin:.5rem 0 .8rem;font-size:.95rem}
+.reviews figcaption{font-weight:800;font-size:.9rem}
+.faq{max-width:46rem;margin:0 auto}
+.faq details{border-bottom:1px solid var(--line);padding:1rem 0}
+.faq summary{font-weight:700;cursor:pointer;font-size:1.02rem}
+.faq p{margin:.6rem 0 0;color:var(--muted)}
+.center{text-align:center;margin-top:2.2rem}
+footer{padding:2.5rem 16px 6rem;text-align:center;color:var(--muted);font-size:.75rem;max-width:52rem;margin:0 auto}
+.sticky{display:none}
+
+/* quiz overlay */
+.quiz{position:fixed;inset:0;z-index:50;background:#fff;display:none;flex-direction:column}
+.quiz.open{display:flex}
+.quiz-top{border-bottom:1px solid var(--line)}
+.quiz-top .wrap{display:flex;align-items:center;justify-content:space-between;height:4rem}
+.bar{height:6px;background:var(--wash)}.bar i{display:block;height:100%;background:var(--grad);transition:width .3s}
+.quiz-body{flex:1;overflow:auto;padding:2rem 16px 1rem}
+.q{max-width:40rem;margin:0 auto}
+.q .eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.2em;color:var(--red)}
+.q h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:.4rem 0 .6rem}
+.q .help{color:var(--muted);margin:0 0 1.4rem}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.8rem}
+.choice{border:2px solid var(--line);background:#fff;border-radius:.7rem;padding:1.15rem 1rem;text-align:left;cursor:pointer;font-weight:700;font-size:1.05rem;color:var(--ink);min-height:4.2rem}
+.choice small{display:block;font-weight:500;color:var(--muted);font-size:.85rem;margin-top:.2rem}
+.choice:hover{border-color:var(--navy)}
+.choice.sel{border-color:var(--red);background:oklch(0.97 0.02 27)}
+.fields{display:grid;gap:1rem}
+.note{font-size:.88rem;color:var(--muted);background:var(--wash);border-radius:.6rem;padding:.8rem 1rem;margin-top:1rem}
+.consent{font-size:.75rem;color:var(--muted);margin-top:1rem}
+.quiz-nav{border-top:1px solid var(--line);padding:.9rem 16px}
+.quiz-nav .wrap{display:flex;justify-content:space-between;align-items:center;max-width:40rem}
+.ghost{background:none;border:0;color:var(--muted);font-weight:700;cursor:pointer;padding:.6rem}
+.quiz-nav .cta{padding:.85rem 1.6rem;font-size:.9rem}
+.cta[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.done-box{text-align:center;max-width:36rem;margin:2rem auto}
+.done-box .tick{display:grid;place-items:center;width:4rem;height:4rem;margin:0 auto 1rem;border-radius:50%;background:var(--ok);color:#fff;font-size:2rem}
+.cal{margin-top:1.5rem;border:2px dashed var(--line);border-radius:.8rem;padding:2rem;color:var(--muted)}
+
+@media(max-width:760px){
+  .top .cta{display:none}
+  .entry-fields{grid-template-columns:1fr}
+  .field input{font-size:16px}
+  .compare,.steps,.storm,.reviews{grid-template-columns:1fr}
+  .storm h2{text-align:center}
+  .sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+  .sticky .cta{width:100%;font-size:.9rem}
+  .choice{min-height:3.8rem}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar i{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="proto">Prototype for review: nothing you type here is saved or sent.</div>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">THE AMERICAN<br>SOLAR ASSOCIATION<small>ENERGY INDEPENDENCE</small></div>
+    <button class="cta" type="button" data-scroll>See my new monthly bill</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <span class="badge">🔔 For Florida homeowners paying rising utility bills</span>
+    <h1>Stop renting your power. <em>Own your Solar + Tesla Powerwall 3</em> with nothing out of pocket and 6 months of no payments.</h1>
+    <p class="sub">See your new monthly bill in a free virtual consultation. No pressure, no signing on the spot.</p>
+
+    <form class="entry" id="entry" novalidate>
+      <div class="entry-fields">
+        <label class="field">ZIP code
+          <input id="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="33101" aria-describedby="entry-msg">
+        </label>
+        <label class="field">Average monthly electric bill
+          <span class="money"><input id="bill" type="number" inputmode="decimal" min="1" placeholder="250" aria-describedby="entry-msg rent-line"></span>
+        </label>
+        <button class="cta" type="submit">See my new monthly bill →</button>
+        <p class="entry-msg" id="entry-msg" role="alert"></p>
+      </div>
+      <div class="rent" id="rent-line" aria-live="polite">
+        <span>At <b id="rent-bill">$250</b>/month, you'll send your utility <b id="rent-10">$30,000</b> over 10 years, and own nothing.</span>
+      </div>
+      <div class="assure"><span>Nothing out of pocket</span><span>6 months of no payments</span><span>You own the system</span></div>
+    </form>
+
+    <p class="stars"><b>★★★★★</b> Rated by Florida homeowners who made the switch</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Renting your power vs. owning it</h2>
+    <p class="lead-in">Your utility bill never ends and never builds anything for you. Here's the difference.</p>
+    <div class="compare">
+      <article class="rentcol">
+        <h3>Renting from the utility</h3>
+        <ul>
+          <li>A bill every month, forever</li>
+          <li>Rates can go up with no say from you</li>
+          <li>Lights go out when the grid goes down</li>
+          <li>Nothing to show for it after 10 years</li>
+        </ul>
+      </article>
+      <article class="own">
+        <h3>Owning your Solar + Powerwall 3</h3>
+        <ul>
+          <li>A system you own, adding value to your home</li>
+          <li>Always know exactly what you're paying</li>
+          <li>Backup power when the grid goes down</li>
+          <li>Nothing out of pocket and 6 months of no payments*</li>
+        </ul>
+      </article>
+    </div>
+    <div class="center"><button class="cta" type="button" data-scroll>See my new monthly bill</button></div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap storm">
+    <div>
+      <h2>Real energy independence means the lights stay on</h2>
+      <p>Most Florida homeowners don't know that standard solar shuts off during an outage. Without a battery, your panels can't power your home when the grid goes down.</p>
+      <p>With a Tesla Powerwall 3, your home keeps running on stored solar energy through storms and outages, so hurricane season doesn't mean sitting in the dark.</p>
+      <button class="cta" type="button" data-scroll>Check my home</button>
+    </div>
+    <div class="storm-card">
+      <h3>What's included</h3>
+      <ul>
+        <li>Solar panels designed for your roof</li>
+        <li>Tesla Powerwall 3 backup battery</li>
+        <li>Paperwork, permits and approvals handled for you</li>
+        <li>Local Florida team before, during and after install</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lead-in">About two minutes, a few quick taps.</p>
+    <div class="steps">
+      <article><h3>Answer 5 quick questions</h3><p>Your home, your roof and how much sun it gets.</p></article>
+      <article><h3>Get your custom plan</h3><p>We design your system and compare your new monthly bill with what you pay today.</p></article>
+      <article><h3>See it in a free virtual consultation</h3><p>Walk through your numbers from home. No pressure, no signing on the spot.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <h2>Florida homeowners who stopped renting their power</h2>
+    <div class="reviews" style="margin-top:2rem">
+      <figure><div class="st">★★★★★</div><blockquote>I had no idea solar shuts off during an outage without a battery. They explained it clearly and showed me the Powerwall setup. Nothing out of pocket, and I own it.</blockquote><figcaption>Greg Martin</figcaption></figure>
+      <figure><div class="st">★★★★★</div><blockquote>Local team that handled everything. Six months of no payments gave us breathing room, and the Powerwall gives us real peace of mind this hurricane season.</blockquote><figcaption>Ellen Censon Tamayo</figcaption></figure>
+      <figure><div class="st">★★★★★</div><blockquote>No pressure, no signing on the spot. The virtual consultation showed us our new monthly bill and how the system keeps our power on during storms.</blockquote><figcaption>Jim McBarron</figcaption></figure>
+      <figure><div class="st">★★★★★</div><blockquote>They are very efficient, professional and have a good understanding of their work. They helped me choose what I truly needed for my home.</blockquote><figcaption>Samuel Cora</figcaption></figure>
+      <figure><div class="st">★★★★★</div><blockquote>AMAZING company, AMAZING staff. We are extremely happy with our product and saving money.</blockquote><figcaption>Sam Butler</figcaption></figure>
+      <figure><div class="st">★★★★★</div><blockquote>GREAT CUSTOMER SERVICE AND A JOB WELL DONE! American Solar handled the solar project from start to finish. Very professional.</blockquote><figcaption>James Wells</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Questions homeowners ask</h2>
+    <div class="faq" style="margin-top:1.5rem">
+      <details><summary>Is this one of those "free solar" offers?</summary><p>No. You own the system. There's nothing out of pocket and no payments for the first 6 months, subject to approved financing.</p></details>
+      <details><summary>Who qualifies?</summary><p>Florida homeowners with a credit score of at least 650 (680+ for the loan offer) and an average electric bill of $200 a month or more.</p></details>
+      <details><summary>What happens after I answer the questions?</summary><p>A solar specialist builds your custom plan and you pick a time for a free virtual consultation to see your new monthly bill.</p></details>
+      <details><summary>Will someone pressure me to sign?</summary><p>No. The consultation is virtual, free, and there's no signing on the spot.</p></details>
+    </div>
+    <div class="center"><button class="cta" type="button" data-scroll>See my new monthly bill</button></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>*$0 out of pocket and 6 months of no payments require approved financing. Not all homes or applicants will qualify. Requires homeownership, a minimum 650 credit score (680+ for the loan offer), and a minimum $200 monthly electric bill. The 10-year figure is your monthly bill × 120 and assumes no rate changes.</p>
+  <p>Message and data rates may apply. Reply STOP to opt out, HELP for help. Consent to receive messages is not a condition of purchase.</p>
+  <p>© 2026 The American Solar Association. All rights reserved.</p>
+</footer>
+
+<div class="sticky"><button class="cta" type="button" data-scroll>See my new monthly bill</button></div>
+
+<!-- Quiz -->
+<div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="q-title">
+  <div class="quiz-top"><div class="wrap"><div class="brand">THE AMERICAN<br>SOLAR ASSOCIATION<small>ENERGY INDEPENDENCE</small></div><span id="q-count" style="color:var(--muted);font-size:.85rem;font-weight:700"></span></div></div>
+  <div class="bar"><i id="q-bar"></i></div>
+  <div class="quiz-body"><div class="q" id="q"></div></div>
+  <div class="quiz-nav" id="q-nav"><div class="wrap"><button class="ghost" type="button" id="q-back">← Back</button><button class="cta" type="button" id="q-next" disabled>Continue</button></div></div>
+</div>
+
+<script>
+(function(){
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+  const zip = document.getElementById('zip'), bill = document.getElementById('bill'), msg = document.getElementById('entry-msg');
+  const rentBill = document.getElementById('rent-bill'), rent10 = document.getElementById('rent-10');
+  const state = { zip:'', bill:'', home:'', owner:'', roof:'', sun:'', name:'', email:'', phone:'', address:'', city:'' };
+
+  // Live "rent vs own" line: plain arithmetic on the visitor's own bill (bill × 120).
+  bill.addEventListener('input', () => {
+    const b = Number(bill.value);
+    const v = b > 0 ? b : 250;
+    rentBill.textContent = fmt(v);
+    rent10.textContent = fmt(v * 120);
+  });
+  zip.addEventListener('input', () => { zip.value = zip.value.replace(/\D/g,'').slice(0,5); msg.textContent=''; });
+
+  const scrollToEntry = () => { document.getElementById('entry').scrollIntoView({block:'center'}); zip.focus({preventScroll:true}); };
+  document.querySelectorAll('[data-scroll]').forEach(b => b.addEventListener('click', scrollToEntry));
+
+  document.getElementById('entry').addEventListener('submit', e => {
+    e.preventDefault();
+    const z = zip.value, b = Number(bill.value);
+    // Florida ZIPs run 32004–34997.
+    if (!/^\d{5}$/.test(z) || +z < 32004 || +z > 34997) { msg.textContent = 'Please enter a Florida ZIP code.'; zip.focus(); return; }
+    if (!(b > 0)) { msg.textContent = 'Please enter your average monthly electric bill.'; bill.focus(); return; }
+    state.zip = z; state.bill = String(b);
+    openQuiz();
+  });
+
+  // Taps first, homeowner check early, contact before address (address moves after the lead).
+  const steps = [
+    { key:'home', eyebrow:'YOUR HOME', title:'First one is easy. What kind of home is it?', help:'A few quick taps and our team starts on your custom plan.',
+      choices:[['Single-family home'],['Multi-family'],['Mobile home']] },
+    { key:'owner', eyebrow:'ABOUT YOU', title:'Do you own the home?', help:'The owner needs to approve any work on the roof.',
+      choices:[['Yes, I own it'],['No, I rent']] },
+    { key:'roof', eyebrow:'YOUR ROOF', title:'What is the roof made of?', help:'Every roof type here can take panels. It changes the mounting hardware, not whether it works.',
+      choices:[['Asphalt shingle'],['Metal'],['Tile'],['Flat']] },
+    { key:'sun', eyebrow:'YOUR ROOF', title:'How much sun hits the roof?', help:'Shade matters more than roof size.',
+      choices:[['Full sun','No obstructions'],['Partial shade','Some shade during the day']] },
+    { key:'contact', eyebrow:'YOUR PLAN', title:'Where should we send your Energy Independence plan?', help:'A specialist uses your answers to compare your new monthly bill with what you pay today.',
+      fields:[['name','Full name','First and last name','text','name'],['phone','Mobile phone','(555) 555-0123','tel','tel'],['email','Email','you@example.com','email','email']] },
+    { key:'address', eyebrow:'LAST STEP', title:'Where should we design your system?', help:'We use your address to pull satellite imagery of your roof. Your plan request is already in.',
+      fields:[['address','Street address','123 Main Street','text','street-address'],['city','City','City','text','address-level2']] },
+  ];
+  const quiz = document.getElementById('quiz'), qEl = document.getElementById('q'), next = document.getElementById('q-next'), back = document.getElementById('q-back');
+  let i = 0, opener = null;
+
+  function openQuiz(){ opener = document.activeElement; i = 0; quiz.classList.add('open'); document.body.style.overflow='hidden'; render(); }
+  function closeQuiz(){ quiz.classList.remove('open'); document.body.style.overflow=''; if (opener) opener.focus(); }
+
+  function valid(s){
+    if (s.choices) return !!state[s.key];
+    return s.fields.every(([n]) => {
+      const v = (state[n]||'').trim();
+      if (n==='email') return /^\S+@\S+\.\S+$/.test(v);
+      if (n==='phone') return v.replace(/\D/g,'').length >= 10;
+      return v.length > 1;
+    });
+  }
+
+  function render(){
+    const s = steps[i];
+    document.getElementById('q-bar').style.width = Math.round((i+1)/steps.length*100) + '%';
+    document.getElementById('q-count').textContent = s.key==='address' ? 'Plan requested ✓' : 'Step ' + (i+1) + ' of ' + (steps.length-1);
+    document.getElementById('q-nav').style.display = '';
+    let html = '<p class="eyebrow">'+s.eyebrow+'</p><h2 id="q-title" tabindex="-1">'+s.title+'</h2><p class="help">'+s.help+'</p>';
+    if (s.choices) {
+      html += '<div class="choices">' + s.choices.map(([t,n]) => '<button type="button" class="choice'+(state[s.key]===t?' sel':'')+'" data-v="'+t+'">'+t+(n?'<small>'+n+'</small>':'')+'</button>').join('') + '</div>';
+      if (s.key==='home' && Number(state.bill) < 200) html += '<p class="note">Heads up: most homes need an average bill of $200+ a month to qualify. We\'ll still check yours.</p>';
+    } else {
+      html += '<div class="fields">' + s.fields.map(([n,l,p,t,ac]) => '<label class="field">'+l+'<input data-f="'+n+'" type="'+t+'" autocomplete="'+ac+'" placeholder="'+p+'" value="'+(state[n]||'').replace(/"/g,'&quot;')+'"></label>').join('') + '</div>';
+      if (s.key==='contact') html += '<p class="consent">By clicking, I agree to be contacted by The American Solar Association at the number and email provided, including by text. Message and data rates may apply. Consent is not a condition of purchase.</p>';
+    }
+    qEl.innerHTML = html;
+    next.textContent = s.key==='contact' ? 'Get my Energy Independence plan →' : s.key==='address' ? 'Finish and pick a time →' : 'Continue';
+    next.disabled = !valid(s);
+    back.textContent = i===0 ? '← Back to page' : '← Back';
+    qEl.querySelectorAll('.choice').forEach(b => b.addEventListener('click', () => {
+      state[s.key] = b.dataset.v;
+      if (s.key==='owner' && b.dataset.v==='No, I rent') return renter();
+      i++; render();
+    }));
+    qEl.querySelectorAll('[data-f]').forEach(inp => inp.addEventListener('input', () => { state[inp.dataset.f] = inp.value; next.disabled = !valid(s); }));
+    document.getElementById('q-title').focus();
+  }
+
+  function renter(){
+    document.getElementById('q-nav').style.display = 'none';
+    qEl.innerHTML = '<div class="done-box"><h2 id="q-title" tabindex="-1">Thanks for checking</h2><p class="help">Our program is for Florida homeowners, since the owner needs to approve work on the roof. If that changes, we\'d love to help.</p><button class="cta" type="button" id="q-close">Back to the page</button></div>';
+    document.getElementById('q-close').addEventListener('click', closeQuiz);
+    document.getElementById('q-title').focus();
+  }
+
+  function finish(){
+    document.getElementById('q-nav').style.display = 'none';
+    document.getElementById('q-bar').style.width = '100%';
+    qEl.innerHTML = '<div class="done-box"><div class="tick" aria-hidden="true">✓</div><h2 id="q-title" tabindex="-1">You\'re in. Pick a time to see your new monthly bill.</h2><p class="help">A specialist will walk you through your Energy Independence plan in a free virtual consultation.</p><div class="cal">The booking calendar goes here (prototype: nothing was sent).</div></div>';
+    document.getElementById('q-title').focus();
+  }
+
+  next.addEventListener('click', () => {
+    if (!valid(steps[i])) return;
+    if (i === steps.length-1) return finish();
+    i++; render();
+  });
+  back.addEventListener('click', () => { if (i===0) return closeQuiz(); i--; render(); });
+  document.addEventListener('keydown', e => { if (e.key==='Escape' && quiz.classList.contains('open')) closeQuiz(); });
+})();
+</script>
+</body>
+</html>
